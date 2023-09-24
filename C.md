@@ -752,8 +752,126 @@ for (i = 1; i <= 100; i++)
 # 함수
 
 - 함수 중요 3가지
-    - 함수 정의
+    - 함수 정의 : 함수를 실제 코드로 만드는 것이며 기능을 구현
     - 함수 호출
     - 함수 선언
 
 ## 함수 정의
+
+1. 함수명 : 함수의 기능에 맞는 이름은 무엇인가?
+2. 매개변수 : 함수가 기능을 수행하는 데 필요한 데이터는 무엇인가?
+3. 반환형 : 함수가 수행된 이후의 결과는 무엇인가?
+
+```c
+반환형 함수명(매개변수1, 매개변수2)
+{
+명령
+}
+```
+
+- sum함수 작성
+
+```c
+#include <stdio.h>
+
+int sum(int x , int y); // 함수 선언
+
+int main(void)
+{
+    int a, b;
+    int result;
+
+    scanf("%d%d", &a, &b);
+
+    result = sum(a, b); // 함수 호출
+
+    printf("%d", result);
+
+    return 0;
+}
+
+int sum(int x, int y) // 함수 정의
+{
+    int temp;
+
+    temp = x + y;
+
+    return temp; // temp는 잠시 저장하는 역할이지만 없이 서도 무관
+}
+```
+
+- 함수가 호출된면 main함수의 실행은 멈추고 sum함수 정의 부분에 있는 코드가 실행
+- sum함수 내부에 입력값을 받는 변수를 만든다면, sum함수 매개변수 란에 void(값x) 사용 가능 → 호출할 땐 sum() 빈 란
+- 매개변수와 반환값이 모두 없는 함수는 반환형에 모두 void를 쓴다.
+
+## 재귀호출 함수
+
+```c
+# include <stdio.h>
+
+void fruit(int count);
+
+int main(void)
+{
+    fruit(1);
+
+    return 0;
+}
+
+void fruit(int count)
+{
+    printf("apple\n");
+    if (count ==3)
+  	 return; // count 3이면 반환, 끝냄
+    fruit(count + 1);
+}
+```
+
+```c
+# include <stdio.h>
+
+void fruit(int count);
+
+int main(void)
+{
+    fruit(1);
+
+    return 0;
+}
+
+void fruit(int count)
+{
+    printf("apple\n");
+    if (count ==3) return;
+    fruit(count + 1);
+    printf("jan\n");
+}
+
+/*
+apple
+apple
+apple
+jan
+jan
+*/
+```
+
+나의 생각으론
+
+apple
+
+jan
+
+apple
+
+jan
+
+apple
+
+이 출력될 것이라고 생각했다.
+
+하지만 → 재귀호출은
+
+최초에 호출했던 곳이 아닌 직전에 호출했던 곳으로 간다.
+
+# 배열
