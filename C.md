@@ -1193,3 +1193,66 @@ int main(void)
    10   20   30
 */
 ```
+
+
+# C
+
+# 문자
+
+```python
+#include <stdio.h>
+int main(void)
+{
+    char code = 'A';
+    printf("%c", code);
+
+    return 0;
+}
+
+'''
+A
+'''
+```
+
+## 아스키코드
+
+- 알파벳과 숫자는 각각 연속된 아스키 코드 값을 갖는다.
+- 소문자가 대문자보다 아스키 코드 값이 크다.
+- 제어 문자는 백슬래시와 함께 표시하며 출력할 때 그 기능을 수행한다.
+
+`char code1 = ‘A’` 문자 변수
+
+`char code2 = ‘65’` 문자 상수
+
+code1 + 1 == code 2
+
+## getchar함수와 putchar함수
+
+- int getchar(void) : char가 아닌 int형으로 선언할 경우 처리 시간이 단축됨
+- void putchar(int c)
+
+```python
+#include <stdio.h>
+
+int main(void)
+{
+    int ch;
+
+    printf("문자를 입력하세요 : ");
+    ch = getchar();
+
+    putchar(ch);
+
+    return 0;
+}
+```
+
+## 버퍼
+
+입력 : 데이터가 프로그램 안으로 들어오는 것
+
+출력 : 데이터가 프로그램 밖으로 나가는 것
+
+스트림 : 프로그램과 입출력 장치 사이의 다리 역할 수행
+
+문자, 문자열 입력시 엔터가 입력될 때까지 입력장치는 계속 문자를 입력받고, 엔터가 입력되면 데이터들을 입력버퍼에 저장함
