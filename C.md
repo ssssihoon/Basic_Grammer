@@ -1247,12 +1247,257 @@ int main(void)
 }
 ```
 
-## 버퍼
+# C
 
-입력 : 데이터가 프로그램 안으로 들어오는 것
+# 배열과 포인터
 
-출력 : 데이터가 프로그램 밖으로 나가는 것
+ary[n] = k → 값임.
 
-스트림 : 프로그램과 입출력 장치 사이의 다리 역할 수행
+## 배열과 포인터의 관계
 
-문자, 문자열 입력시 엔터가 입력될 때까지 입력장치는 계속 문자를 입력받고, 엔터가 입력되면 데이터들을 입력버퍼에 저장함
+배열은 자료형이 같은 변수를 메모리에 연속으로 할당한다.
+
+따라서 각 배열 요소는 일정한 간격으로 주소를 갖게 된다. 응 맞아
+
+### 배열명으로 배열 요소 사용하기
+
+주소는 정수처럼 보이지만 자료형에 관한 정보를 갖고 있는 특별한 값이다.
+
+`주소 + 정수 → 주소 + (정수 * 주소를 구한 변수의 크기)`
+
+### 배열명에 정수 연산을 수행해 배열 요소 사용
+
+```c
+#include <stdio.h>
+
+int main(void)
+{
+    int ary[3];
+    int i;
+
+    *(ary + 0) = 10;
+    *(ary + 1) = *(ary + 0) + 10;
+
+    printf("세 번째 배열 요소에 키보드 입력 : ");
+    scanf("%d", ary + 2);
+    
+    for (i = 0; i < 3; i++)
+    {
+        printf("%5d", *(ary + i));
+    }
+
+    return 0;
+}
+```
+
+### 배열명 역할을 하는 포인터
+
+배열명은 주소여서 포인터에 저장할 수 있다.
+
+### 배열명처럼 사용되는 포인터
+
+```c
+#include <stdio.h>
+
+int main(void)
+{
+    int ary[3];
+    int *pa = ary;
+    int i;
+
+    *pa = 10;
+    *(pa + 1) = 20;
+    pa[2] = pa[0] + pa[1];
+
+    for(i=0; i<3; i++)
+    {
+        printf("%5d", pa[i]);
+    }
+    return 0;
+}
+```
+
+### 배열명과 포인터의 차이
+
+- sizeof 연산의 결과가 다름
+- 변수와 상수의 차이
+
+```c
+int ary[3];
+int *pa = ary;
+
+sizeof(ary) // 12바이트, 배열 전체 크기
+sizeof(pa) // 4바이트, 포인터 하나의 크기
+```
+
+```c
+pa = pa + 1
+pa ++ // 가능
+
+ary = ary + 1
+ary ++ // 불가능
+```
+
+괄호를 간접 참조 연산자에 먼저 사용하면 안된다.
+
+### 포인터의 뺄셈과 관계 연산
+
+`포인터 - 포인터 → 값의 차 / 가리키는 자료형의 크기`
+
+`printf(”pb - pa : %u\n”, pb - pa);` → 간격을 알 수 있다.
+
+## 정리
+
+- 배열명은 첫 번째 요소의 주소다.
+- 포인터에 배열명을 저장하면 포인터를 배열명처럼 사용할 수 있다.
+- 배열명의 정수 덧셈은 가리키는 자료형의 크기를 곱해서 더한다.
+- 포인터의 뺄셈 결과는 배열 요소 간의 간격 차이를 의미한다.
+
+## 배열을 처리하는 함수
+
+### 배열의 값을 출력하는 함수
+
+```c
+#include <stdio.h>
+
+void print_ary(int *pa);
+int main(void)
+{
+    int ary[5] = {1, 2, 3, 4, 5};
+
+    print_ary(ary);
+
+    return 0;
+}
+
+void print_ary(int *pa)
+{
+    int i;
+
+    for(i=0; i<5; i++)
+    {
+        printf("%d ", pa[i]);
+    }
+}
+```
+
+### 배열 요소의 개수가 다른 배열도 출력하는 함수
+
+```c
+#include <stdio.h>
+
+void print_ary(int *pa, int size);
+int main(void)
+{
+    int ary[5] = {1, 2, 3, 4, 5};
+
+    print_ary(ary);
+
+    return 0;
+}
+
+void print_ary(int *pa, int size)
+{
+    int i;
+
+    for(i=0; i<size; i++)
+    {
+        printf("%d ", pa[i]);
+    }
+}
+```
+
+### 배열에 값을 입력하는 함수와 최댓값을 찾는 함수 ⁉️
+
+```c
+#include <stdio.h>
+
+void input_ary(double *pa, int size);
+double find_max(double *pa, int size);
+
+int main(void)
+{
+    double ary[5];
+    double max;
+    int size = sizeof(ary) / sizeof(ary[0]);
+
+    input_ary(ary, size);
+    max = find_max(ary, size);
+    printf("배열의 최댓값 : %.1lf\n", max);
+
+    return 0;
+}
+void input_ary(double *pa, int size)
+{
+    int i;
+    for(i=0; i<size; i++)
+    {
+        scanf("%lf", &pa[i]);
+    }
+}
+double find_max(double *pa, int size)
+{
+    int i;
+    double max = pa[0];
+    for(i=0; i<size; i++)
+    {
+        if (max <= pa[i])
+        {
+            max = pa[i];
+        }
+    }
+    return max;
+}
+```
+
+### 도전 실전 예제
+
+로또 번호
+
+```c
+/* 1~45 중에 6개의 서로 다른 수를 입력하고 출력 입력한 수가 이미 저장된 수와 같으면 에러메세지를 출력하고 다시 입력 */
+
+#include <stdio.h>
+
+void input_nums(int *lotto_nums);
+void print_nums(int *lotto_nums);
+
+int main(void)
+{
+    int lotto_nums[6];
+
+    input_nums(lotto_nums);
+    print_nums(lotto_nums);
+    return 0;
+}
+void input_nums(int *lotto_nums)
+{
+    int i;
+    int j;
+    for(i=0; i<6; i++)
+    {
+        printf("번호 입력 : ");
+        scanf("%d", &lotto_nums[i]);
+        for(j=0; j<i; j++)
+        {
+            if(lotto_nums[i] == lotto_nums[j])
+            {
+                printf("같은 번호가 있습니다!\n");
+                printf("번호 입력 : ");
+                scanf("%d", &lotto_nums[i]);
+            }
+        }
+    }
+}
+void print_nums(int *lotto_nums)
+{
+    int i;
+
+    printf("로또 번호 : ");
+
+    for(i=0; i<6; i++)
+    {
+        printf("%d ", lotto_nums[i]);
+    }
+}
+```
