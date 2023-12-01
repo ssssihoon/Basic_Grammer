@@ -1197,58 +1197,6 @@ int main(void)
 
 # C
 
-# 문자
-
-```python
-#include <stdio.h>
-int main(void)
-{
-    char code = 'A';
-    printf("%c", code);
-
-    return 0;
-}
-
-'''
-A
-'''
-```
-
-## 아스키코드
-
-- 알파벳과 숫자는 각각 연속된 아스키 코드 값을 갖는다.
-- 소문자가 대문자보다 아스키 코드 값이 크다.
-- 제어 문자는 백슬래시와 함께 표시하며 출력할 때 그 기능을 수행한다.
-
-`char code1 = ‘A’` 문자 변수
-
-`char code2 = ‘65’` 문자 상수
-
-code1 + 1 == code 2
-
-## getchar함수와 putchar함수
-
-- int getchar(void) : char가 아닌 int형으로 선언할 경우 처리 시간이 단축됨
-- void putchar(int c)
-
-```python
-#include <stdio.h>
-
-int main(void)
-{
-    int ch;
-
-    printf("문자를 입력하세요 : ");
-    ch = getchar();
-
-    putchar(ch);
-
-    return 0;
-}
-```
-
-# C
-
 # 배열과 포인터
 
 ary[n] = k → 값임.
@@ -1499,5 +1447,174 @@ void print_nums(int *lotto_nums)
     {
         printf("%d ", lotto_nums[i]);
     }
+}
+```
+
+# 문자
+
+## 아스키 코드 값과 문자 입출력 함수
+
+- 알파벳과 숫자는 각각 연속된 아스키 코드 값을 갖는다.
+- 소문자가 대문자보다 아스키 코드 값이 크다.
+- 제어 문자는 백슬래시와 함께 표시하며 출력할 때 그 기능을 수행한다.
+
+### 대문자를 소문자로 변경
+
+```c
+#include <stdio.h>
+
+int main(void)
+{
+    char small, cap = 'G';
+
+    if ((cap >= 'A') && (cap <= 'Z'))
+    {
+        small = cap + ('a' - 'A');
+    }
+    printf("대문자 : %c %c", cap, '\n');
+    printf("소문자 : %c", small);
+
+    return 0 ;
+}
+```
+
+### 공백이나 제어 문자의 입력
+
+- %c 변환 문자는 공백, 탭, 개행 문자도 입력한다.
+
+```c
+#include <stdio.h>
+
+int main(void)
+{
+    char ch1, ch2;
+
+    scanf("%c%c", &ch1, &ch2);
+
+    printf("[%c%c]", ch1, ch2);
+
+    return 0 ;
+}
+```
+
+### getchar, putchar
+
+- `int getchar(void);` : 매개변수 x, 입력한 문자를 반환 // int형인 이유 : 문자 이외의 값도 반환
+- `int putchar(int);` : 출력할 문자를 인수로 준다.
+
+```c
+#include <stdio.h>
+
+int main(void)
+{
+    int ch;
+
+    ch = getchar();
+    printf("입력한 문자 : ");
+    putchar(ch);
+    putchar('\n');
+
+    return 0;
+
+}
+```
+
+## 버퍼를 사용하는 입력 함수
+
+### 버퍼를 사용하는 문자 입력
+
+```c
+#include <stdio.h>
+
+int main(void)
+{
+    char ch;
+    int i;
+
+    for (i=0; i<3; i++)
+    {
+        scanf("%c", &ch);
+        printf("%c", ch);
+    }
+
+    return 0;
+
+}
+```
+
+### scanf 함수 반환값 활용
+
+```c
+#include <stdio.h>
+
+int main(void)
+{
+    char ch;
+
+    int res;
+
+    while (1)
+    {
+        res = scanf("%c", &ch);
+        if (res == -1) break;
+        {
+            printf("%d ", ch);
+        }
+    }
+
+    return 0;
+
+}
+```
+
+### getchar() 를 이용한 문자열 입력
+
+```c
+#include <stdio.h>
+
+void my_gets(char *str, int size);
+
+int main(void)
+{
+    char str[7];
+
+    my_gets(str, sizeof(str));
+    printf("입력한 문자열 : %s\n", str);
+
+    return 0;
+}
+
+void my_gets(char *str, int size)
+{
+    int i = 0;
+    int ch;
+    ch = getchar();
+
+    while ((ch != '\n') && (i < size-1))
+    {
+        str[i] = ch;
+        i++;
+        ch = getchar();
+    }
+    str[i] = '\0';
+}
+```
+
+### 입력 버퍼 지우기
+
+```c
+#include <stdio.h>
+
+int main(void) {
+    int num, grade;
+
+    printf("학번 입력 : ");
+    scanf("%d", &num);
+    **getchar();       // <- 이 함수를 사용해 초기화 개행문자 \n을 없앰**
+    printf("학점 입력 : ");
+    grade = getchar();
+    printf("학번 : %d, 학점 : %d", num, grade);
+
+    return 0;
 }
 ```
