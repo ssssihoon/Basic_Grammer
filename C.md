@@ -1618,3 +1618,51 @@ int main(void) {
     return 0;
 }
 ```
+
+# 문자열
+
+## 문자열과 포인터
+
+- 문자열 (상수)는 값을 바꿀 수 없다! ⁉️
+
+---
+
+이 부분 중요함.⁉️
+
+```c
+#include <stdio.h>
+ 
+int main(void) {
+    char str[80];
+
+    printf("문자열 입력 : ");
+    scanf("%s", str);
+    printf("첫 번째 단어 : %s\n", str);
+    scanf("%s", str);
+    printf("버퍼에 남아 있는 두 번째 단어 : %s\n", str);
+
+    return 0;
+}
+
+/*
+문자열 입력 : apple jam
+첫 번째 단어 : apple
+버퍼에 남아 있는 두 번째 단어 : jam
+*/
+```
+
+버퍼에 저장되는 처음 scanf경우 → apple jam\n
+
+엔터를 누르게 되면 apple\0이 str에 저장이 됨. (\0 널 문자는 자동으로 붙여짐)
+
+그러면 버퍼에 jam\0이 저장됨. (\0 널 문자는 자동으로 붙여짐)
+
+### gets 함수를 사용한 문자열 입력
+
+- 공백이 포함된 문자열을 한 번에 입력할 수 없다.
+
+apple jam\0이 저장됨.
+
+- gets함수는 엔터만 눌러도 입력을 끝낸다.
+
+### fgets 함수를 사용한 문자열 입력
