@@ -1731,7 +1731,41 @@ int main(void) {
 
 ### 전역변수
 
-- 함수 밖에 변수를 선언하면 전역 변수가 된다.
+```c
+#include <stdio.h>
+
+void assign10(void); // 함수 선언
+void assign20(void); // 함수 선언
+
+int a; // a변수 선언
+
+int main(void)
+{
+    printf("함수 호출 전 a 값 : %d\n", a);
+
+    assign10(); // 함수 호출
+    assign20(); // 함수 호출
+
+    printf("함수 호출 후 a 값 : %d\n", a);
+
+    return 0;
+}
+
+void assign10(void)
+{
+    a = 10; // a의 값 초기화
+}
+
+void assign20(void)
+{
+    int a; // a를 선언. 그러나 전역변수가 있어서 사용 불가
+
+    a = 20; // a의 값을 초기화
+}
+```
+
+함수 밖에 변수를 선언하면 전역 변수가 된다.
+
 - 프로그램이 끝날 때 까지 존재한다.
 
 a를 전역변수를 20으로 값을 할당 후 void temp() 함수에서 10으로 값을 초기화를 한다면 void temp()함수에서는 a의 값을 10으로 초기화 후 사용이 가능하고 그 외의 함수에서는 모두 값이 20이다.
@@ -1746,4 +1780,70 @@ a를 전역변수를 20으로 값을 할당 후 void temp() 함수에서 10으�
 
 ### 정적 지역 변수
 
-`static`
+`static` : 함수가 끝나도 메모리를 반납하지 않음, 사용 범위가 블록 내로 제한
+
+```c
+#include <stdio.h>
+
+void auto_func(void);
+void static_func(void);
+
+int main(void)
+{
+    int i;
+
+    printf("일반 지역 변수(auto)를 사용한 함수...\n");
+    for(i = 0; i < 3; i ++)
+    {
+        auto_func();
+    }
+
+    printf("정적 지역 변수(static)를 사용한 함수...\n");
+    for(i = 0; i < 3; i ++)
+    {
+        static_func();
+    }
+
+    return 0;
+}
+
+void auto_func(void)
+{
+    auto int a = 0;
+
+    a++;
+    printf("%d\n", a);
+}
+
+void static_func(void)
+{
+    static int a;
+    a++;
+    printf("%d\n", a);
+
+}
+```
+
+### 레지스터 변수
+
+- 처리속도가 빠름
+- CPU안에 있는 레지스터를 이용
+- CPU 자원을 잠깐 빌리는 것
+
+```c
+#include <stdio.h>
+
+int main(void)
+{
+    register int i; // 레지스터 변수 선언
+    auto int sum = 0; // auto 지역 변수
+
+    for (i = 1; i <= 10000; i++) // 반복
+    {
+        sum += i; // i 누적
+    }
+    printf("%d\n", sum);
+
+    return 0;
+}
+```
