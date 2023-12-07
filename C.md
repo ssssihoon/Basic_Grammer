@@ -1847,3 +1847,31 @@ int main(void)
     return 0;
 }
 ```
+
+## 함수의 데이터 공유 방법
+
+### 값을 복사해서 전달하는 방법
+
+```c
+// 인공지능학과 2023240043 황시훈
+#include <stdio.h>
+
+void add_ten(int a);
+
+int main(void)
+{
+    int a = 10;
+
+    add_ten(a);
+    printf("a : %d\n", a);
+
+    return 0;
+}
+
+void add_ten(int a)
+{
+    a = a +10;
+}
+
+// a : 10
+```
